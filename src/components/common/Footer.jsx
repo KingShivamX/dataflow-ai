@@ -2,8 +2,8 @@ import React from "react"
 
 const Footer = () => {
     return (
-        <footer className="bg-yellow-400 p-4 flex justify-start items-center min-h-[10vh]">
-            <p className="text-lg">
+        <footer className="bg-yellow-400 p-4 flex justify-start items-center min-h-[8vh]">
+            <p className="text-md">
                 &copy; 2024 DataFlowAI. All rights reserved.
             </p>
         </footer>
