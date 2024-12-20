@@ -116,16 +116,17 @@ const LinearRegression = () => {
     // Modify point addition to ensure values are within 0-1 range
     const handleCanvasClick = (event) => {
         if (!isTraining && chartRef.current) {
-            // Hide error lines if they're showing
-            if (showErrorLines) {
-                setShowErrorLines(false)
-            }
+            const canvas = chartRef.current
+            const rect = canvas.getBoundingClientRect()
 
-            const rect = chartRef.current.getBoundingClientRect()
-            const x = (event.clientX - rect.left) / rect.width
-            const y = 1 - (event.clientY - rect.top) / rect.height
+            // Get the scaling factor of the canvas
+            const scaleX = canvas.width / rect.width
+            const scaleY = canvas.height / rect.height
 
-            // Ensure points are within 0-1 range
+            // Calculate the position considering the scale
+            const x = ((event.clientX - rect.left) * scaleX) / canvas.width
+            const y = 1 - ((event.clientY - rect.top) * scaleY) / canvas.height
+
             const xValue = Math.max(0, Math.min(1, x))
             const yValue = Math.max(0, Math.min(1, y))
 
@@ -298,38 +299,12 @@ const LinearRegression = () => {
                                 Equation: y = {slope.toFixed(3)}x +{" "}
                                 {intercept.toFixed(3)}
                             </p>
-                            <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2">
-                                <div className="bg-blue-50 p-2 rounded">
-                                    <span className="font-semibold">R²:</span>{" "}
-                                    {metrics.r2.toFixed(4)}
-                                    <br />
-                                    <span className="text-xs text-gray-500">
-                                        (1 = perfect fit, 0 = poor fit)
-                                    </span>
-                                </div>
-                                <div className="bg-blue-50 p-2 rounded">
-                                    <span className="font-semibold">MSE:</span>{" "}
-                                    {metrics.mse.toFixed(4)}
-                                    <br />
-                                    <span className="text-xs text-gray-500">
-                                        (Lower is better)
-                                    </span>
-                                </div>
-                                <div className="bg-blue-50 p-2 rounded">
-                                    <span className="font-semibold">MAE:</span>{" "}
-                                    {metrics.mae.toFixed(4)}
-                                    <br />
-                                    <span className="text-xs text-gray-500">
-                                        (Lower is better)
-                                    </span>
-                                </div>
-                            </div>
                         </>
                     )}
                 </div>
 
                 {/* Chart container */}
-                <div className="relative" style={{ height: "60vh" }}>
+                <div className="relative w-full h-[50vh] md:h-[67vh]">
                     <canvas
                         ref={chartRef}
                         onClick={handleCanvasClick}
@@ -344,6 +319,124 @@ const LinearRegression = () => {
                         generate button for random points.
                     </p>
                     <p>You need at least 2 points to train the model.</p>
+                </div>
+
+                {/* Add this after the chart container */}
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h3 className="font-semibold mb-2">Model Performance</h3>
+                    <div className="text-sm">
+                        {points.length > 0 && slope !== 0 && (
+                            <>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="bg-white p-3 rounded border">
+                                        <p className="font-medium mb-2">
+                                            R² Score:
+                                        </p>
+                                        <p className="text-lg mb-1">
+                                            {metrics.r2.toFixed(4)}
+                                        </p>
+                                        <div className="text-sm text-gray-600">
+                                            Measures how well the model fits the
+                                            data:
+                                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                                                <li>1.0 = Perfect fit</li>
+                                                <li>0.0 = Poor fit</li>
+                                                <li>
+                                                    Negative = Worse than
+                                                    horizontal line
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-3 rounded border">
+                                        <p className="font-medium mb-2">
+                                            Mean Squared Error (MSE):
+                                        </p>
+                                        <p className="text-lg mb-1">
+                                            {metrics.mse.toFixed(4)}
+                                        </p>
+                                        <div className="text-sm text-gray-600">
+                                            Average of squared differences
+                                            between predictions and actual
+                                            values:
+                                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                                                <li>
+                                                    Penalizes larger errors more
+                                                </li>
+                                                <li>Always positive</li>
+                                                <li>Lower is better</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-3 rounded border">
+                                        <p className="font-medium mb-2">
+                                            Mean Absolute Error (MAE):
+                                        </p>
+                                        <p className="text-lg mb-1">
+                                            {metrics.mae.toFixed(4)}
+                                        </p>
+                                        <div className="text-sm text-gray-600">
+                                            Average of absolute differences
+                                            between predictions and actual
+                                            values:
+                                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                                                <li>Easier to interpret</li>
+                                                <li>
+                                                    Less sensitive to outliers
+                                                    than MSE
+                                                </li>
+                                                <li>Lower is better</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 text-sm text-gray-600">
+                                    <p className="font-medium mb-2">
+                                        Understanding the Metrics:
+                                    </p>
+                                    <ul className="list-disc pl-4 space-y-2">
+                                        <li>
+                                            <span className="font-medium">
+                                                R² (R-squared):
+                                            </span>{" "}
+                                            Shows how much of the data's
+                                            variance is explained by the model.
+                                            A value of 0.8 means 80% of the
+                                            variance in y is predictable from x.
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">
+                                                MSE:
+                                            </span>{" "}
+                                            Calculated by squaring the
+                                            differences between predicted and
+                                            actual values. Useful for training
+                                            but harder to interpret due to
+                                            squared units.
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">
+                                                MAE:
+                                            </span>{" "}
+                                            Average distance between predicted
+                                            and actual values. If MAE is 0.1,
+                                            predictions are off by 0.1 units on
+                                            average.
+                                        </li>
+                                        <li className="text-gray-500 italic">
+                                            Note: For this visualization, all
+                                            values are scaled between 0 and 1,
+                                            so the errors (MSE and MAE) will
+                                            also be between 0 and 1.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
 
