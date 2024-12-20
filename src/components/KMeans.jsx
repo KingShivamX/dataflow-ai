@@ -16,6 +16,7 @@ const KMeans = () => {
 
     // Calculate Euclidean distance between two points
     const calculateDistance = (p1, p2) => {
+        if (!p1 || !p2) return Infinity
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2))
     }
 
@@ -33,6 +34,8 @@ const KMeans = () => {
 
     // Assign points to nearest centroid
     const assignToClusters = (points, centroids) => {
+        if (!points.length || !centroids.length) return []
+
         return points.map((point) => {
             const distances = centroids.map((centroid) =>
                 calculateDistance(point, centroid)
@@ -46,13 +49,21 @@ const KMeans = () => {
 
     // Update centroid positions
     const updateCentroids = (clusteredPoints, k) => {
+        if (!clusteredPoints.length) return []
+
         return Array(k)
             .fill()
             .map((_, i) => {
                 const clusterPoints = clusteredPoints.filter(
                     (p) => p.cluster === i
                 )
-                if (clusterPoints.length === 0) return centroids[i]
+                if (clusterPoints.length === 0) {
+                    // If no points in cluster, return random position
+                    return {
+                        x: Math.random(),
+                        y: Math.random(),
+                    }
+                }
 
                 return {
                     x:
@@ -95,7 +106,7 @@ const KMeans = () => {
         setIterations(0)
 
         try {
-            // Step 1: Initialize centroids and immediately assign clusters
+            // Step 1: Initialize centroids with animation
             const initialCentroids = Array(k)
                 .fill()
                 .map(() => ({
@@ -104,19 +115,43 @@ const KMeans = () => {
                 }))
             setCentroids(initialCentroids)
 
+            // Initial pause to show random centroids
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+
             let currentCentroids = [...initialCentroids]
             let iterationCount = 0
             const MAX_ITERATIONS = 50
 
             while (iterationCount < MAX_ITERATIONS) {
-                // Step 2: Assign points to clusters
+                // Step 2: Assign points to clusters (with delay)
                 const clusteredPoints = assignToClusters(
                     points,
                     currentCentroids
                 )
+                setClusters(clusteredPoints)
+                await new Promise((resolve) => setTimeout(resolve, 500))
 
-                // Step 3: Update centroids
+                // Step 3: Update centroids with interpolation
                 const newCentroids = updateCentroids(clusteredPoints, k)
+
+                // Animate centroid movement
+                const STEPS = 10
+                for (let step = 0; step <= STEPS; step++) {
+                    const interpolatedCentroids = currentCentroids.map(
+                        (oldCentroid, i) => ({
+                            x:
+                                oldCentroid.x +
+                                (newCentroids[i].x - oldCentroid.x) *
+                                    (step / STEPS),
+                            y:
+                                oldCentroid.y +
+                                (newCentroids[i].y - oldCentroid.y) *
+                                    (step / STEPS),
+                        })
+                    )
+                    setCentroids(interpolatedCentroids)
+                    await new Promise((resolve) => setTimeout(resolve, 50))
+                }
 
                 // Step 4: Check for convergence
                 const hasConverged = currentCentroids.every(
@@ -124,9 +159,6 @@ const KMeans = () => {
                         calculateDistance(centroid, newCentroids[i]) < 0.00001
                 )
 
-                // Update state
-                setClusters(clusteredPoints)
-                setCentroids(newCentroids)
                 setIterations(iterationCount + 1)
 
                 // If converged, stop
@@ -135,13 +167,9 @@ const KMeans = () => {
                 // Update for next iteration
                 currentCentroids = [...newCentroids]
                 iterationCount++
-
-                // Small delay for visualization
-                await new Promise((resolve) => setTimeout(resolve, 50))
             }
         } catch (error) {
             console.error("Error in clustering:", error)
-            // Reset states on error
             setClusters([])
             setCentroids([])
             setIterations(0)
@@ -171,73 +199,78 @@ const KMeans = () => {
 
     // Initialize and update chart
     useEffect(() => {
-        if (chartRef.current) {
-            if (chartInstance.current) {
-                chartInstance.current.destroy()
-            }
+        if (!chartRef.current) return
 
-            const ctx = chartRef.current.getContext("2d")
-            chartInstance.current = new Chart(ctx, {
-                type: "scatter",
-                data: {
-                    datasets: [
-                        {
-                            label: "Data Points",
-                            data: points || [],
-                            backgroundColor: clusters.length
-                                ? clusters.map(
-                                      (p) =>
-                                          `hsl(${
-                                              ((p.cluster * 360) / k) % 360
-                                          }, 70%, 70%)`
-                                  )
-                                : "rgba(54, 162, 235, 0.5)",
-                            pointRadius: 8,
-                        },
-                        {
-                            label: "Centroids",
-                            data: centroids || [],
-                            backgroundColor: (centroids || []).map(
-                                (_, i) =>
-                                    `hsl(${((i * 360) / k) % 360}, 70%, 50%)`
-                            ),
-                            pointRadius: 12,
-                            pointStyle: "triangle",
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: false,
-                    transitions: {
-                        active: {
-                            animation: {
-                                duration: 0,
-                            },
-                        },
-                    },
-                    scales: {
-                        x: {
-                            min: 0,
-                            max: 1,
-                            title: {
-                                display: true,
-                                text: "X",
-                            },
-                        },
-                        y: {
-                            min: 0,
-                            max: 1,
-                            title: {
-                                display: true,
-                                text: "Y",
-                            },
-                        },
-                    },
-                },
-            })
+        if (chartInstance.current) {
+            chartInstance.current.destroy()
         }
+
+        const ctx = chartRef.current.getContext("2d")
+        const data = {
+            datasets: [
+                {
+                    label: "Data Points",
+                    data: points,
+                    backgroundColor: clusters.length
+                        ? clusters.map(
+                              (p) =>
+                                  `hsl(${
+                                      ((p.cluster * 360) / k) % 360
+                                  }, 70%, 70%)`
+                          )
+                        : Array(points.length).fill("rgba(54, 162, 235, 0.5)"),
+                    pointRadius: 8,
+                },
+                {
+                    label: "Centroids",
+                    data: centroids,
+                    backgroundColor: Array(k)
+                        .fill()
+                        .map(
+                            (_, i) => `hsl(${((i * 360) / k) % 360}, 70%, 50%)`
+                        ),
+                    pointRadius: 12,
+                    pointStyle: "triangle",
+                },
+            ],
+        }
+
+        chartInstance.current = new Chart(ctx, {
+            type: "scatter",
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 100, // Shorter animation duration
+                },
+                transitions: {
+                    active: {
+                        animation: {
+                            duration: 100,
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        min: 0,
+                        max: 1,
+                        title: {
+                            display: true,
+                            text: "X",
+                        },
+                    },
+                    y: {
+                        min: 0,
+                        max: 1,
+                        title: {
+                            display: true,
+                            text: "Y",
+                        },
+                    },
+                },
+            },
+        })
     }, [points, centroids, clusters, k])
 
     // Also modify the clear function to reset everything properly
@@ -314,10 +347,7 @@ const KMeans = () => {
                 </div>
 
                 {/* Chart */}
-                <div
-                    className="relative"
-                    style={{ height: "70vh", maxHeight: "800px" }}
-                >
+                <div className="relative w-full h-[50vh] md:h-[67vh]">
                     <canvas
                         ref={chartRef}
                         onClick={handleCanvasClick}
