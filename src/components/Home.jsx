@@ -23,8 +23,31 @@ const Home = () => {
                         platform for visualizing machine learning algorithms.
                     </h3>
                 </div>
+                <div className="flex flex-col md:flex-row gap-8 items-center justify-center max-w-4xl mx-auto mt-8 md:mt-16">
+                    <div className="w-full md:w-2/5">
+                        <img
+                            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNncxbHI4dzVxeDJpNmVnaHJzdTI3NHNleTRxMGxyMmFrdWJ3dDY4ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MCd33lAKSLajqWT60m/giphy.webp"
+                            alt="Machine Learning Visualization"
+                            className="rounded-lg w-full shadow-lg"
+                        />
+                    </div>
+                    <div className="w-full md:w-2/5 space-y-4">
+                        <h2 className="text-xl font-bold text-gray-800">
+                            What is Machine Learning?
+                        </h2>
+                        <p className="text-gray-600 text-base md:text-lg">
+                            Machine Learning is teaching computers to learn from
+                            data, just like we learn from experience. Instead of
+                            writing strict rules, we show the computer lots of
+                            examples, and it figures out the patterns by itself!
+                            Through mathematical algorithms and statistical
+                            models, it can make predictions and uncover hidden
+                            insights from complex datasets.
+                        </p>
+                    </div>
+                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 mt-8 mb-8 md:mb-16 md:mt-16  max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-8 mb-8 md:mb-16 md:mt-16  max-w-4xl mx-auto">
                     {algorithms.map((algo) => (
                         <div
                             key={algo.path}
