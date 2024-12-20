@@ -35,7 +35,7 @@ const LinearRegression = () => {
                             data: points,
                             pointRadius: 5,
                             backgroundColor: "rgba(54, 162, 235, 1)",
-                            animation: true,
+                            animation: false,
                             animationDuration: 300,
                         },
                         {
