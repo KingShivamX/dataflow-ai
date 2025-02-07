@@ -5,6 +5,7 @@ const Home = () => {
 
     const algorithms = [
         { path: "/linear-regression", name: "Linear Regression" },
+        { path: "/logistic-regression", name: "Logistic Regression" },
         { path: "/knn", name: "K-Nearest Neighbors" },
         { path: "/kmeans", name: "K-Means Clustering" },
     ]
@@ -24,6 +25,7 @@ const Home = () => {
                 <div className="flex flex-col md:flex-row gap-8 items-center justify-center max-w-4xl mx-auto mt-8 md:mt-16">
                     <div className="w-full md:w-2/5">
                         <img
+                            // src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjliN2Fub2V1cWxzbndsMW8zc3pvenVpYzRrMXFicXduc3BsMjJueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eljCVpMrhepUSgZaVP/giphy.gif"
                             src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNncxbHI4dzVxeDJpNmVnaHJzdTI3NHNleTRxMGxyMmFrdWJ3dDY4ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MCd33lAKSLajqWT60m/giphy.webp"
                             alt="Machine Learning Visualization"
                             className="rounded-lg w-full shadow-lg"
