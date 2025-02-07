@@ -69,18 +69,22 @@ const KNN = () => {
                             data: points.filter((p) => p.class === 0),
                             backgroundColor: "rgba(54, 162, 235, 0.5)",
                             pointRadius: 8,
+                            animation: false,
                         },
                         {
                             label: "Class 1",
                             data: points.filter((p) => p.class === 1),
                             backgroundColor: "rgba(255, 99, 132, 0.5)",
                             pointRadius: 8,
+                            animation: false,
                         },
+
                         {
                             label: "Class 2",
                             data: points.filter((p) => p.class === 2),
                             backgroundColor: "rgba(75, 192, 192, 0.5)", // Teal color for class 2
                             pointRadius: 8,
+                            animation: false,
                         },
                         ...(testPoint
                             ? [
@@ -516,8 +520,8 @@ const KNN = () => {
                                             <li className="text-gray-500">
                                                 True Negatives (TN) are not used
                                                 in multi-class problems as
-                                                there&apos;s no clear &quot;negative&quot;
-                                                class
+                                                there&apos;s no clear
+                                                &quot;negative&quot; class
                                             </li>
                                             <li>
                                                 Precision: How many predictions
