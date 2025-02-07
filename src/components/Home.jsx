@@ -7,7 +7,6 @@ const Home = () => {
         { path: "/linear-regression", name: "Linear Regression" },
         { path: "/knn", name: "K-Nearest Neighbors" },
         { path: "/kmeans", name: "K-Means Clustering" },
-        { path: "/perceptron", name: "Simple Neural Network" },
     ]
 
     return (
