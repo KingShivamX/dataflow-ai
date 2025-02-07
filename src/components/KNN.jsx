@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Chart } from "chart.js/auto"
 import { useNavigate } from "react-router-dom"
 
@@ -144,11 +144,11 @@ const KNN = () => {
         if (chartRef.current) {
             const canvas = chartRef.current
             const rect = canvas.getBoundingClientRect()
-            
+
             // Get the scaling factor of the canvas
             const scaleX = canvas.width / rect.width
             const scaleY = canvas.height / rect.height
-            
+
             // Calculate the position considering the scale
             const x = ((event.clientX - rect.left) * scaleX) / canvas.width
             const y = 1 - ((event.clientY - rect.top) * scaleY) / canvas.height
@@ -156,7 +156,10 @@ const KNN = () => {
             const xValue = Math.max(0, Math.min(1, x))
             const yValue = Math.max(0, Math.min(1, y))
 
-            setPoints([...points, { x: xValue, y: yValue, class: currentClass }])
+            setPoints([
+                ...points,
+                { x: xValue, y: yValue, class: currentClass },
+            ])
         }
     }
 
@@ -165,11 +168,11 @@ const KNN = () => {
         if (chartRef.current) {
             const canvas = chartRef.current
             const rect = canvas.getBoundingClientRect()
-            
+
             // Get the scaling factor of the canvas
             const scaleX = canvas.width / rect.width
             const scaleY = canvas.height / rect.height
-            
+
             // Calculate the position considering the scale
             const x = ((event.clientX - rect.left) * scaleX) / canvas.width
             const y = 1 - ((event.clientY - rect.top) * scaleY) / canvas.height
@@ -513,7 +516,7 @@ const KNN = () => {
                                             <li className="text-gray-500">
                                                 True Negatives (TN) are not used
                                                 in multi-class problems as
-                                                there's no clear "negative"
+                                                there&apos;s no clear &quot;negative&quot;
                                                 class
                                             </li>
                                             <li>

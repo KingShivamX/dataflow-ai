@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Chart } from "chart.js/auto"
 import { useNavigate } from "react-router-dom"
 
@@ -242,12 +242,12 @@ const KMeans = () => {
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: {
-                    duration: 100, // Shorter animation duration
+                    duration: 0, // Shorter animation duration
                 },
                 transitions: {
                     active: {
                         animation: {
-                            duration: 100,
+                            duration: 0,
                         },
                     },
                 },
@@ -392,7 +392,9 @@ const KMeans = () => {
                                 Step 3: Run Clustering
                             </span>
                             <ul className="list-disc pl-4 mt-1">
-                                <li>Click "Start Clustering" to begin</li>
+                                <li>
+                                    Click &quot;Start Clustering&quot; to begin
+                                </li>
                                 <li>Watch as points are grouped by color</li>
                                 <li>
                                     Triangles show cluster centers (centroids)
@@ -426,7 +428,7 @@ const KMeans = () => {
                                 Notice how initial point placement affects
                                 results
                             </li>
-                            <li>Use "Clear All" to start fresh</li>
+                            <li>Use &quot;Clear All&quot; to start fresh</li>
                         </ul>
                     </div>
                 </div>

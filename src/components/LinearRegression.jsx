@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Chart } from "chart.js/auto"
 import { useNavigate } from "react-router-dom"
 
@@ -59,7 +59,7 @@ const LinearRegression = () => {
                                       borderColor: "rgba(255, 99, 132, 0.5)",
                                       borderWidth: 1,
                                       pointRadius: 3,
-                                      animation: true,
+                                      //   animation: true,
                                   },
                               ]
                             : []),
@@ -403,7 +403,7 @@ const LinearRegression = () => {
                                             <span className="font-medium">
                                                 R² (R-squared):
                                             </span>{" "}
-                                            Shows how much of the data's
+                                            Shows how much of the data&apos;s
                                             variance is explained by the model.
                                             A value of 0.8 means 80% of the
                                             variance in y is predictable from x.
