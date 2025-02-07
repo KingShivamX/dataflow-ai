@@ -17,6 +17,7 @@ const LinearRegression = () => {
         mae: 0,
     })
     const [showErrorLines, setShowErrorLines] = useState(false)
+    const [isGeneratedPoints, setIsGeneratedPoints] = useState(false)
 
     // Initialize chart
     useEffect(() => {
@@ -35,8 +36,8 @@ const LinearRegression = () => {
                             data: points,
                             pointRadius: 5,
                             backgroundColor: "rgba(54, 162, 235, 1)",
-                            animation: false,
-                            animationDuration: 300,
+                            animation: isGeneratedPoints,
+                            animationDuration: isGeneratedPoints ? 800 : 0,
                         },
                         {
                             label: "Regression Line",
@@ -112,11 +113,12 @@ const LinearRegression = () => {
                 },
             })
         }
-    }, [points, slope, intercept, showErrorLines])
+    }, [points, slope, intercept, showErrorLines, isGeneratedPoints])
 
-    // Modify point addition to ensure values are within 0-1 range
+    // Modify point addition to set isGeneratedPoints to false
     const handleCanvasClick = (event) => {
         if (!isTraining && chartRef.current) {
+            setIsGeneratedPoints(false)
             const canvas = chartRef.current
             const rect = canvas.getBoundingClientRect()
 
@@ -198,8 +200,9 @@ const LinearRegression = () => {
         }, 800)
     }
 
-    // Generate random points
+    // Modify generateRandomPoints to set isGeneratedPoints to true
     const generateRandomPoints = () => {
+        setIsGeneratedPoints(true)
         const numPoints = 10 // You can make this adjustable if needed
         const newPoints = []
 
@@ -217,11 +220,12 @@ const LinearRegression = () => {
         setIntercept(0)
     }
 
-    // Clear all points
+    // Modify clearPoints to reset isGeneratedPoints
     const clearPoints = () => {
         setPoints([])
         setSlope(0)
         setIntercept(0)
+        setIsGeneratedPoints(false)
     }
 
     // Generate error lines for visualization
@@ -276,7 +280,6 @@ const LinearRegression = () => {
 
                     <button
                         onClick={clearPoints}
-                        disabled={isTraining || points.length === 0}
                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         Clear Points
@@ -284,9 +287,10 @@ const LinearRegression = () => {
 
                     <button
                         onClick={() => setShowErrorLines(!showErrorLines)}
+                        disabled={slope === 0}
                         className={`px-4 py-2 ${
                             showErrorLines ? "bg-red-500" : "bg-blue-500"
-                        } text-white rounded hover:opacity-90`}
+                        } text-white rounded hover:opacity-90 disabled:bg-gray-400 disabled:cursor-not-allowed`}
                     >
                         {showErrorLines ? "Hide Errors" : "Show Errors"}
                     </button>

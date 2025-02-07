@@ -20,18 +20,6 @@ const KMeans = () => {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2))
     }
 
-    // Initialize random centroids
-    const initializeCentroids = () => {
-        const newCentroids = Array(k)
-            .fill()
-            .map(() => ({
-                x: Math.random(),
-                y: Math.random(),
-            }))
-        setCentroids(newCentroids)
-        return newCentroids
-    }
-
     // Assign points to nearest centroid
     const assignToClusters = (points, centroids) => {
         if (!points.length || !centroids.length) return []
@@ -74,28 +62,6 @@ const KMeans = () => {
                         clusterPoints.length,
                 }
             })
-    }
-
-    // Run one iteration of k-means
-    const runIteration = () => {
-        if (points.length < k) return false
-
-        // Use current centroids from state
-        const currentCentroids = [...centroids]
-        const clusteredPoints = assignToClusters(points, currentCentroids)
-        const newCentroids = updateCentroids(clusteredPoints, k)
-
-        // Check for convergence
-        const hasConverged = currentCentroids.every(
-            (centroid, i) =>
-                calculateDistance(centroid, newCentroids[i]) < 0.0001
-        )
-
-        setClusters(clusteredPoints)
-        setCentroids(newCentroids)
-        setIterations((prev) => prev + 1)
-
-        return !hasConverged
     }
 
     // Start clustering process
@@ -428,7 +394,6 @@ const KMeans = () => {
                                 Notice how initial point placement affects
                                 results
                             </li>
-                            <li>Use &quot;Clear All&quot; to start fresh</li>
                         </ul>
                     </div>
                 </div>

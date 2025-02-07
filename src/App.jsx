@@ -13,10 +13,7 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route
-                    path="/linear-regression"
-                    element={<LinearRegression />}
-                />
+                <Route path="/linear-regression" element={<LinearRegression />} />
                 <Route path="/knn" element={<KNN />} />
                 <Route path="/kmeans" element={<KMeans />} />
                 <Route path="*" element={<NotFound />} />
