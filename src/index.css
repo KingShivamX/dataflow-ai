@@ -6,3 +6,77 @@ html,
 body {
     font-family: "Ubuntu", sans-serif;
 }
+
+/* Dark Mode Base Styles */
+body.dark-mode {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+
+/* Smooth transitions for dark mode changes */
+body, div, button, p, h1, h2, h3, h4, h5, h6, span, a {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Dark mode scrollbar */
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #333;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #666;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Algorithm cards animation */
+.algorithm-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.algorithm-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Dark mode UI components */
+body.dark-mode .algorithm-card {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+body.dark-mode .algorithm-card:hover {
+    border-color: #f6e05e;
+}
+
+/* Focus styles for accessibility */
+button:focus, a:focus, input:focus {
+    outline: 2px solid #4299e1;
+    outline-offset: 2px;
+}
+
+body.dark-mode button:focus, 
+body.dark-mode a:focus, 
+body.dark-mode input:focus {
+    outline-color: #f6e05e;
+}

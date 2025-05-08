@@ -1,0 +1,36 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f0f9ff" />
+  
+  <!-- Coordinate system -->
+  <line x1="50" y1="250" x2="350" y2="250" stroke="#333" stroke-width="2" />
+  <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2" />
+  
+  <!-- X and Y axis labels -->
+  <text x="200" y="280" text-anchor="middle" fill="#333">X</text>
+  <text x="30" y="150" text-anchor="middle" fill="#333">Y</text>
+  
+  <!-- Class 0 points -->
+  <circle cx="100" cy="100" r="6" fill="#3b82f6" />
+  <circle cx="120" cy="120" r="6" fill="#3b82f6" />
+  <circle cx="90" cy="130" r="6" fill="#3b82f6" />
+  <circle cx="110" cy="90" r="6" fill="#3b82f6" />
+  <circle cx="130" cy="100" r="6" fill="#3b82f6" />
+  
+  <!-- Class 1 points -->
+  <circle cx="250" cy="200" r="6" fill="#ef4444" />
+  <circle cx="270" cy="180" r="6" fill="#ef4444" />
+  <circle cx="290" cy="210" r="6" fill="#ef4444" />
+  <circle cx="260" cy="220" r="6" fill="#ef4444" />
+  <circle cx="280" cy="190" r="6" fill="#ef4444" />
+  
+  <!-- Test point -->
+  <circle cx="200" cy="150" r="8" fill="#eab308" stroke="#333" stroke-width="2" />
+  
+  <!-- Distance indicators -->
+  <line x1="200" y1="150" x2="130" y2="100" stroke="#333" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="200" y1="150" x2="260" y2="220" stroke="#333" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="200" y1="150" x2="110" y2="90" stroke="#333" stroke-width="1" stroke-dasharray="5,5" />
+  
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" font-size="20" fill="#333">K-Nearest Neighbors</text>
+</svg> 
